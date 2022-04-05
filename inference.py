@@ -54,14 +54,14 @@ class InferencePipeline:
     def infer_utts(self, utt_file):
         with open(utt_file, 'r') as o:
             utt_text = o.read().splitlines()
-        for line in utt_text:
+        for i, line in enumerate(utt_text):
             arpabet_seq = self.text_frontend.text_to_phonemes(line)
             inputs = self.text_frontend.forward(arpabet_seq)
             inputs = torch.LongTensor([inputs])
             outputs = self.model.inference(inputs)
             if self.synth_true==True:
                 synthesised = self.synthesise(outputs)
-                self.save_audio(synthesised)
+                self.save_audio(synthesised, i)
             if self.dur_true==True:
                 self.write_to_file('durations.txt', f'text: {line}\n')
                 self.write_to_file('durations.txt',f'arpabet: {arpabet_seq}\n')
@@ -78,9 +78,9 @@ class InferencePipeline:
     def get_alignments(self, outputs):
         return  np.argmax(outputs["alignments"], axis=1)
 
-    def save_audio(self, audio):
+    def save_audio(self, audio, save_name):
         audio = audio[0].cpu().numpy()
-        sf.write('demo/demo_evelyn5.wav', audio, self.sr)
+        sf.write(f'demo/{save_name}.wav', audio, self.sr)
 
     def write_to_file(self, filename, line):
         with open(filename, 'a') as o:
