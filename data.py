@@ -1,4 +1,5 @@
 import torch
+import os
 
 from scipy.io.wavfile import read
 
@@ -19,10 +20,12 @@ class Dataset(torch.utils.data.Dataset):
     def __init__(self, config, training=True):
         super(Dataset, self).__init__()
         self.training = training
+        self.wav_path = config['wav_path']
         filelist = config['train_filelist'] if self.training else config['valid_filelist']
         with open(filelist, 'r') as f:
             self._metadata = [line.replace('\n', '') for line in f.readlines()]
         self._load_mels_from_disk = config['load_mels_from_disk']
+
         if not self._load_mels_from_disk:
             self.mel_fn = MelTransformer(
                 filter_length=config['filter_length'],
@@ -48,7 +51,7 @@ class Dataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         item_meta = self._metadata[index]
         text, phonemes_start, phonemes_duration, phonemes_code, filename = item_meta.split('|')
-        
+        filename = os.path.join(self.wav_path, filename)
         item = {
             'text': text,
             'phonemes_start': str_to_int_list(phonemes_start),
