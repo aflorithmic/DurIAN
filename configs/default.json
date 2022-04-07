@@ -3,6 +3,7 @@
     "validation_step": 250,
     "checkpoint_save_step": 1000,
     
+    "wav_path" : "/home/jovyan/DurIAN/LJSpeech-1.1/wavs",
     "train_filelist": "./filelists/train_filelist.txt",
     "valid_filelist": "./filelists/valid_filelist.txt",
     "load_mels_from_disk": false,
