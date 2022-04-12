@@ -4,3 +4,5 @@ matplotlib
 scipy
 librosa
 nltk
+git+https://github.com/shrubb/listener.git
+pydub
