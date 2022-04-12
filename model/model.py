@@ -89,7 +89,7 @@ class DurIAN(BaseDurIAN):
         """
         if isinstance(alignments, type(None)):
             alignments, durations = self.duration_model.inference(inputs)
-        print(durations)
+        # print(durations)
         pre_outputs, postnet_outputs = self.backbone_model.inference(
             inputs=inputs,
             alignments=alignments

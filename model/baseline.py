@@ -90,11 +90,14 @@ class BaselineDurIAN(BaseDurIAN):
         :param inputs: torch.LongTensor, sequence of phoneme embedding ids
         """
         if isinstance(alignments, type(None)):
-            alignments, _ = self.duration_model.inference(inputs)
+            alignments, durations = self.duration_model.inference(inputs)
+        print("--------------------------------------------------------------------------------------------------------------")
+        print(f"Size of durations tensor is : {durations.size()}")
         pre_outputs, postnet_outputs = self.backbone_model.inference(
             inputs=inputs,
             alignments=alignments
         )
+        # self.alignments = alignments
         outputs = {
             'pre_outputs': pre_outputs,
             'postnet_outputs': postnet_outputs,

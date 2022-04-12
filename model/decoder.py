@@ -30,7 +30,7 @@ class BaselineDecoder(BaseModule):
         Decodes aligned acoustic features for further mel prediction.
         """
         outputs = torch.nn.utils.rnn.pack_padded_sequence(
-            input=aligned_features, lengths=output_lengths,
+            input=aligned_features, lengths=output_lengths.cpu(),
             batch_first=True, enforce_sorted=False
         )
         outputs, _ = self.rnn(outputs)

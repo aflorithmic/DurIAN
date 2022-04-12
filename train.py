@@ -60,6 +60,7 @@ def run(TTS_FRONTEND, TTS_CONFIG, args):
             for batch in train_dataloader:
                 # Training step
                 batch = model.parse_batch(batch)
+                # print(batch)
                 losses, stats = trainer.compute_loss(model, batch, training=True)
                 grad_norm = trainer.run_backward(model, losses=losses)
                 stats.update(grad_norm)

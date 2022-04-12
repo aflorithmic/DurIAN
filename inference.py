@@ -16,7 +16,7 @@ class InferencePipeline:
         with open('configs/default.json') as f:
             self.config = json.load(f)
         self.sr = 22050
-        self.checkpoint_path = 'evelyn_test/checkpoint_45000.pt'
+        self.checkpoint_path = 'evelyn_test/checkpoint_82000.pt'
         self.dur_true = modes['durations']
         self.synth_true = modes['synth']
         self.text_frontend = TextFrontend()
@@ -66,6 +66,7 @@ class InferencePipeline:
                 self.write_to_file('durations.txt', f'text: {line}\n')
                 self.write_to_file('durations.txt',f'arpabet: {arpabet_seq}\n')
                 self.write_to_file('durations.txt',f'durations: {outputs["durations"]}\n')
+                self.write_to_file('durations-only.txt',f'{np.multiply(outputs["durations"].numpy(), 11.60).tolist()}\n')
                 alignment_idx =  self.get_alignments(outputs)
                 self.write_to_file('durations.txt',f'alignment indices: {alignment_idx}\n')
 
