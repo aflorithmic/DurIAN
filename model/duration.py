@@ -27,7 +27,7 @@ class DurationModel(BaseModule):
     def _forward_impl(self, inputs, input_lengths):
         outputs = self.embedding(inputs)
         outputs = torch.nn.utils.rnn.pack_padded_sequence(
-            input=outputs, lengths=input_lengths, batch_first=True
+            input=outputs, lengths=input_lengths.cpu(), batch_first=True
         )
         outputs, _ = self.rnn(outputs)
         outputs, _ = torch.nn.utils.rnn.pad_packed_sequence(
